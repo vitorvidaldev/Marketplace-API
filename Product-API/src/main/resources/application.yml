@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/marketplace
+    username: admin
+    password: admin@123.
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      dll-auto: create-drop
+    properties:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
