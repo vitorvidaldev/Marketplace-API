@@ -15,13 +15,20 @@ import javax.validation.Valid
 @RequestMapping("/rest/v1/products")
 class ProductController(val productService: ProductService) {
 
+    // Things to think about
+    // Price and offers. Should they be separate microservices?
+    // How to handle the price that the user buys the product????
+    // How to handle monetary data in kotlin?
+
     @GetMapping
     fun getProducts(
         @RequestParam(value = "name", required = false) productName: String?,
-        @RequestParam(value = "page", required = false, defaultValue = "0") pageNumber: Int,
-        @RequestParam(value = "size", required = false, defaultValue = "30") pageSize: Int
+        @RequestParam(value = "size", required = false, defaultValue = "30") pageSize: Int?,
+        @RequestParam(value = "page", required = false, defaultValue = "0") pageNumber: Int?
     ): ResponseEntity<Page<ProductDTO>> {
-        val products = productService.getProducts(productName, pageNumber, pageSize)
+        assert(pageNumber != null)
+        assert(pageSize != null)
+        val products = productService.getProducts(productName, pageSize!!, pageNumber!!)
         return ResponseEntity.ok().body(products)
     }
 
@@ -36,6 +43,8 @@ class ProductController(val productService: ProductService) {
         val productDTO = productService.registerProduct(registerProductDTO)
         return ResponseEntity.status(HttpStatus.CREATED).body(productDTO)
     }
+
+    // Note (Vitor): Update product; name, description, owner.
 
     @DeleteMapping("/{productId}")
     fun deleteProduct(@PathVariable(value = "productId") productId: UUID): ResponseEntity<Void> {

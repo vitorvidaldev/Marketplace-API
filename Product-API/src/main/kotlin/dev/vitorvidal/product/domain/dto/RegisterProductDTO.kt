@@ -1,4 +1,3 @@
 package dev.vitorvidal.product.domain.dto
 
-class RegisterProductDTO {
-}
+data class RegisterProductDTO(val productName: String, val productDescription: String, val productOwner: String)

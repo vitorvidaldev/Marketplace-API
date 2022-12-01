@@ -1,7 +1,7 @@
 package dev.vitorvidal.product.domain.entity
 
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
@@ -14,5 +14,6 @@ class ProductEntity(
     var name: String,
     var description: String,
     var owner: String, // Make this a user? Should there be a user microservice?
-    var createdAt: LocalDateTime = LocalDateTime.now()
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    var lastUpdatedAt: LocalDateTime
 )

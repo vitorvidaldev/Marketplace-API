@@ -1,4 +1,13 @@
 package dev.vitorvidal.product.domain.dto
 
-class ProductDTO {
-}
+import java.time.LocalDateTime
+import java.util.*
+
+data class ProductDTO(
+    val productId: UUID,
+    val productName: String,
+    val productDescription: String,
+    val owner: String,
+    val createdAt: LocalDateTime,
+    val updatedAt: LocalDateTime
+)

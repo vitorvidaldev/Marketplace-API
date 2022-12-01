@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
+import java.time.LocalDateTime
 import java.util.*
 
 @Slf4j
@@ -25,10 +26,15 @@ class ProductService(val productRepository: ProductRepository) {
         val page = PageRequest.of(pageNumber, pageSize)
         val productPage = productRepository.findByFilter(productName, page)
 
-        // Map product entity to product dto
+        // Note (Vitor): Model mapper ?????
         return productPage.map { entity ->
             ProductDTO(
-                entity.productId
+                entity.productId,
+                entity.name,
+                entity.description,
+                entity.owner,
+                entity.createdAt,
+                entity.lastUpdatedAt
             )
         }
     }
@@ -37,11 +43,16 @@ class ProductService(val productRepository: ProductRepository) {
         val optionalProduct = productRepository.findById(productId)
 
         if (optionalProduct.isPresent) {
-            val productEntity = optionalProduct.get()
+            val entity = optionalProduct.get()
 
-            // Map product entity to product dto
+            // Note (Vitor): Model mapper ?????
             return ProductDTO(
-                productEntity.
+                entity.productId,
+                entity.name,
+                entity.description,
+                entity.owner,
+                entity.createdAt,
+                entity.lastUpdatedAt
             )
         }
 
@@ -50,23 +61,22 @@ class ProductService(val productRepository: ProductRepository) {
 
     fun registerProduct(registerProductDTO: RegisterProductDTO): ProductDTO? {
         val productEntity = ProductEntity(
-            registerProductVO.productName,
-            registerProductVO.productBrand,
-            registerProductVO.productPrice,
-            registerProductVO.userId
+            name = registerProductDTO.productName,
+            description = registerProductDTO.productDescription,
+            owner = registerProductDTO.productOwner,
+            lastUpdatedAt = LocalDateTime.now()
         )
 
         val createdProduct = productRepository.save(productEntity)
 
-        return ProductVO(
+        // Note (Vitor): Model mapper ??????
+        return ProductDTO(
             createdProduct.productId,
-            createdProduct.productName,
-            createdProduct.productBrand,
-            createdProduct.productPrice,
-            createdProduct.creationDate,
-            productEntity.isActive,
-            createdProduct.lastUpdateDate,
-            createdProduct.userId
+            createdProduct.name,
+            createdProduct.description,
+            createdProduct.owner,
+            createdProduct.createdAt,
+            createdProduct.lastUpdatedAt
         )
     }
 
