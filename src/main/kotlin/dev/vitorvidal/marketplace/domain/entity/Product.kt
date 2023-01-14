@@ -6,7 +6,7 @@ import java.util.*
 
 @Entity
 @Table(name = "product")
-open class Product {
+class Product {
     @Id
     lateinit var productId: UUID
 

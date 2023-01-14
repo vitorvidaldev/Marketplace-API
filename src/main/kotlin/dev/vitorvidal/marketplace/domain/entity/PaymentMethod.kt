@@ -5,7 +5,7 @@ import java.util.*
 
 @Entity
 @Table(name = "payment_method")
-open class PaymentMethod {
+class PaymentMethod {
     @Id
     lateinit var paymentMethodId: UUID
 

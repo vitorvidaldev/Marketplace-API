@@ -6,7 +6,7 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "address")
-open class Address {
+class Address {
     // TODO define id
     @Column(name = "country", columnDefinition = "VARCHAR(20)", nullable = false)
     lateinit var country: String // TODO maybe enum?

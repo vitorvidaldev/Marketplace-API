@@ -1,35 +1,44 @@
 package dev.vitorvidal.marketplace.domain.entity
 
 import jakarta.persistence.*
+import org.hibernate.Hibernate
 import java.sql.Timestamp
 import java.util.*
 
 @Entity
 @Table(name = "user")
-open class User {
+class User(
     @Id
-    lateinit var id: UUID
-
+    val id: UUID,
     @Column(name = "full_name", columnDefinition = "VARCHAR(60)", nullable = false)
-    lateinit var fullName: String
-
+    val fullName: String,
     @Column(name = "email", columnDefinition = "VARCHAR(60)", nullable = false)
-    lateinit var email: String
-
+    val email: String,
     @Column(name = "password", columnDefinition = "VARCHAR(60)", nullable = false)
-    lateinit var password: String
-
+    val password: String,
     @Column(name = "cpf", columnDefinition = "CHAR(11)", nullable = false)
-    lateinit var cpf: String
-
+    val cpf: String,
+    @Column(name = "creation_date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    val creationDate: Timestamp,
+    @Column(name = "last_update_date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    val lastUpdateDate: Timestamp
+) {
     @ManyToOne(fetch = FetchType.LAZY)
     lateinit var address: Address
 
-    @Column(name = "creation_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    lateinit var creationDate: Timestamp
+    override fun toString(): String {
+        return "User(id=$id, fullName='$fullName', email='$email', password='$password', cpf='$cpf', creationDate=$creationDate, lastUpdateDate=$lastUpdateDate)"
+    }
 
-    @Column(name = "last_update_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    lateinit var lastUpdateDate: Timestamp
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
+        other as User
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
 }

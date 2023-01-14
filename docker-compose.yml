@@ -1,16 +1,18 @@
 version: "3.9"
 
 services:
-  postgresql:
+  mysql:
     image: 'bitnami/mysql:8.0.31'
     ports:
-      - '3302:3302'
+      - '3306:3306'
     volumes:
       - 'mysql_data:/bitnami/mysql/data'
     environment:
       - MYSQL_ROOT_USER=admin
       - MYSQL_ROOT_PASSWORD=admin!123
       - MYSQL_DATABASE=marketplace
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin!123
     networks:
       - mysql
 

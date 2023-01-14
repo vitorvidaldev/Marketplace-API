@@ -8,6 +8,10 @@ plugins {
     kotlin("plugin.jpa") version "1.7.22"
 }
 
+allOpen {
+    annotations("jakarta.persistence.Entity", "jakarta.persistence.MappedSuperclass", "jakarta.persistence.Embedabble")
+}
+
 group = "dev.vitorvidal"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17

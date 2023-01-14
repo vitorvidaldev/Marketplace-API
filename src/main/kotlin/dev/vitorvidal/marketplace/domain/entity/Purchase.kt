@@ -1,12 +1,13 @@
 package dev.vitorvidal.marketplace.domain.entity
 
+import dev.vitorvidal.marketplace.domain.enum.PaymentTypeEnum
 import jakarta.persistence.*
 import java.sql.Timestamp
 import java.util.*
 
 @Entity
 @Table(name = "purchase")
-open class Purchase {
+class Purchase {
     @Id
     lateinit var purchaseId: UUID
 
