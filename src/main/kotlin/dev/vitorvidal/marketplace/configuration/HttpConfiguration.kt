@@ -1,0 +1,3 @@
+package dev.vitorvidal.marketplace.configuration
+
+class HttpConfiguration
