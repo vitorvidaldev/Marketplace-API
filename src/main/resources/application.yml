@@ -3,9 +3,10 @@ spring:
     url: jdbc:mysql://localhost:3306/marketplace
     username: admin
     password: admin!123
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    open-in-view: false
+    show-sql: true
     hibernate:
-      dll-auto: create-drop
-    properties:
-      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: create-drop
+      format_sql: true

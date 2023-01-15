@@ -12,22 +12,16 @@ import java.util.*
 class Address(
     @Id
     val id: UUID,
-
     @Column(name = "country", columnDefinition = "VARCHAR(20)", nullable = false)
     val country: String,  // TODO maybe enum?
-
     @Column(name = "state", columnDefinition = "VARCHAR(20)", nullable = false)
     val state: String,
-
     @Column(name = "city", columnDefinition = "VARCHAR(20)", nullable = false)
     val city: String,
     @Column(name = "street_name", columnDefinition = "VARCHAR(30)", nullable = false)
     val streetName: String,
-
     @Column(name = "street_number", columnDefinition = "INT", nullable = false) // TODO Verify column definition
     val streetNumber: Int,
-
-
     @Column(name = "post_code", columnDefinition = "VARCHAR(20)", nullable = false)
     val postCode: String,
 ) {
