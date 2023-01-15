@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import java.util.*
 
 interface PurchaseRepository : JpaRepository<Purchase, UUID>, JpaSpecificationExecutor<Purchase> {
-    fun findByIdAndUserId(userId: UUID, productId: UUID, pageable: Pageable): Page<Purchase> // TODO validate
+    fun findByIdAndBuyerId(userId: UUID, productId: UUID, pageable: Pageable): Page<Purchase> // TODO validate
 }

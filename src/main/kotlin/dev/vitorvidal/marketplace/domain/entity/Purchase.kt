@@ -2,28 +2,35 @@ package dev.vitorvidal.marketplace.domain.entity
 
 import dev.vitorvidal.marketplace.domain.enum.PaymentTypeEnum
 import jakarta.persistence.*
+import org.hibernate.Hibernate
 import java.sql.Timestamp
 import java.util.*
 
 @Entity
 @Table(name = "purchase")
-class Purchase {
+class Purchase(
     @Id
-    lateinit var purchaseId: UUID
-
+    val id: UUID,
     @Column(name = "purchase_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    lateinit var purchaseDate: Timestamp
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    lateinit var product: Product
-
+    val purchaseDate: Timestamp,
     @Column(name = "payment_type", columnDefinition = "VARCHAR(20)", nullable = false)
-    lateinit var paymentType: PaymentTypeEnum
-
+    val paymentType: PaymentTypeEnum,
     @ManyToOne(fetch = FetchType.LAZY)
-    lateinit var buyer: User
-
+    val product: Product,
     @ManyToOne(fetch = FetchType.LAZY)
-    lateinit var seller: User
+    val buyer: User,
+    @ManyToOne(fetch = FetchType.LAZY)
+    val seller: User
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
+        other as User
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+    override fun toString(): String = "Purchase(id=$id, purchaseDate=$purchaseDate, paymentType=$paymentType)"
 }

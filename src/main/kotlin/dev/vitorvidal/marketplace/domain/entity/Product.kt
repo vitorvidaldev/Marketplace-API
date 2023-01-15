@@ -1,29 +1,38 @@
 package dev.vitorvidal.marketplace.domain.entity
 
 import jakarta.persistence.*
+import org.hibernate.Hibernate
 import java.sql.Timestamp
 import java.util.*
 
 @Entity
 @Table(name = "product")
-class Product {
+class Product(
     @Id
-    lateinit var productId: UUID
-
+    val id: UUID,
     @Column(name = "name", columnDefinition = "VARCHAR(60)", nullable = false)
-    lateinit var productName: String
-
+    val productName: String,
     @Column(name = "description", columnDefinition = "VARCHAR(500)", nullable = false)
-    lateinit var productDescription: String
-
+    val productDescription: String,
     @ManyToOne(fetch = FetchType.LAZY)
-    lateinit var creator: User
-
+    val creator: User,
     @Column(name = "creation_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    lateinit var creationDate: Timestamp
-
+    val creationDate: Timestamp,
     @Column(name = "last_updated_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    lateinit var lastUpdatedDate: Timestamp
+    val lastUpdatedDate: Timestamp
+) {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
+        other as User
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+    override fun toString(): String =
+        "Product(id=$id, productName='$productName', productDescription='$productDescription', creationDate=$creationDate, lastUpdatedDate=$lastUpdatedDate)"
 }

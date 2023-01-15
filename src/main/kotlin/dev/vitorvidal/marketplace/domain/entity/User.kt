@@ -25,12 +25,11 @@ class User(
     @Temporal(TemporalType.TIMESTAMP)
     val lastUpdateDate: Timestamp
 ) {
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) // TODO should this relationship be null?
     lateinit var address: Address
 
-    override fun toString(): String {
-        return "User(id=$id, fullName='$fullName', email='$email', password='$password', cpf='$cpf', creationDate=$creationDate, lastUpdateDate=$lastUpdateDate)"
-    }
+    override fun toString(): String =
+        "User(id=$id, fullName='$fullName', email='$email', password='$password', cpf='$cpf', creationDate=$creationDate, lastUpdateDate=$lastUpdateDate)"
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
