@@ -8,5 +8,5 @@ spring:
     open-in-view: false
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create-drop # TODO configure database creation script and change this to validate(?)
       format_sql: true

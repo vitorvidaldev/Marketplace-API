@@ -29,13 +29,19 @@ class UserController(val userService: UserService) {
     ): ResponseEntity<UserResponseVO> = ResponseEntity.ok().body(userService.registerUserAddress(registerAddressVO))
 
     @PutMapping("/data") // TODO patch?
-    fun updateUserData(@RequestBody @Valid updateUserDataVO: UpdateUserDataVO): ResponseEntity<UserResponseVO> =
-        ResponseEntity.ok().body(userService.updateUserData(updateUserDataVO))
+    fun updateUserData(
+        @RequestHeader(name = "userId") userId: UUID,
+        @RequestBody @Valid updateUserDataVO: UpdateUserDataVO
+    ): ResponseEntity<UserResponseVO> =
+        ResponseEntity.ok().body(userService.updateUserData(userId, updateUserDataVO))
 
     @PutMapping("/password") // TODO patch?
     fun updateUserPassword(@RequestBody @Valid updateUserPasswordVO: UpdateUserPasswordVO): ResponseEntity<UserResponseVO> =
         ResponseEntity.ok().body(userService.updateUserPassword(updateUserPasswordVO))
 
-    @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable(name = "userId") userId: UUID): ResponseEntity<Void> = userService.deleteUser()
+    @DeleteMapping("/{userId}")
+    fun deleteUser(@PathVariable(name = "userId") userId: UUID): ResponseEntity<Void> {
+        userService.deleteUser(userId)
+        return ResponseEntity.noContent().build()
+    }
 }

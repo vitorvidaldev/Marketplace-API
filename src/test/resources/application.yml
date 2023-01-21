@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:marketplace;DB_CLOSE_DELAY=-1
+    username: admin
+    password: admin!123
+    driver-class-name: org.h2.Driver
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+      format_sql: true
