@@ -11,8 +11,8 @@ import java.util.*
 @RestController
 @RequestMapping("/rest/v1/user")
 class UserController(val userService: UserService) {
-    @GetMapping("/{userId}")
-    fun getUserById(@PathVariable(name = "userId") userId: UUID): ResponseEntity<UserResponseVO> =
+    @GetMapping
+    fun getUserById(@RequestHeader(name = "userId") userId: UUID): ResponseEntity<UserResponseVO> =
         ResponseEntity.ok(userService.getUserById(userId))
 
     @PostMapping("/login")
@@ -41,8 +41,8 @@ class UserController(val userService: UserService) {
     fun updateUserPassword(@RequestBody @Valid updateUserPasswordVO: UpdateUserPasswordVO): ResponseEntity<UserResponseVO> =
         ResponseEntity.ok().body(userService.updateUserPassword(updateUserPasswordVO))
 
-    @DeleteMapping("/{userId}")
-    fun deleteUser(@PathVariable(name = "userId") userId: UUID): ResponseEntity<Void> {
+    @DeleteMapping
+    fun deleteUser(@RequestHeader(name = "userId") userId: UUID): ResponseEntity<Void> {
         userService.deleteUser(userId)
         return ResponseEntity.noContent().build()
     }

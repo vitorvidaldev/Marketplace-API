@@ -1,5 +1,7 @@
 package dev.vitorvidal.marketplace.application.service
 
+import dev.vitorvidal.marketplace.configuration.Constants.Companion.USER_NOT_FOUND_EXCEPTION_MESSAGE
+import dev.vitorvidal.marketplace.configuration.exception.UserNotFoundException
 import dev.vitorvidal.marketplace.domain.entity.User
 import dev.vitorvidal.marketplace.domain.enum.SearchOperation
 import dev.vitorvidal.marketplace.domain.model.SearchCriteria
@@ -21,13 +23,13 @@ class UserService(val userRepository: UserRepository, val addressService: Addres
                 entity.id, entity.fullName, entity.email, entity.creationDate, entity.lastUpdateDate, entity.address
             )
         }
-        return null // TODO throw exception; add controller advice
+        throw UserNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE)
     }
 
     fun loginUser(loginVO: LoginVO): UserResponseVO? {
         val spec = UserSpecification()
-        spec.add(SearchCriteria("email", loginVO.email, SearchOperation.EQUAL))
-        spec.add(SearchCriteria("password", loginVO.password, SearchOperation.EQUAL))
+        spec.add(SearchCriteria(User::email.name, loginVO.email, SearchOperation.EQUAL))
+        spec.add(SearchCriteria(User::password.name, loginVO.password, SearchOperation.EQUAL))
         val optionalUser: Optional<User> = userRepository.findBy(spec) { q -> q.first() }
         if (optionalUser.isPresent) {
             val entity = optionalUser.get()
@@ -40,7 +42,7 @@ class UserService(val userRepository: UserRepository, val addressService: Addres
                 entity.address
             )
         }
-        return null // TODO throw exception; add controller advice
+        throw UserNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE)
     }
 
     fun registerUser(registerUserVO: RegisterUserVO): UserResponseVO = userRepository.save(
@@ -67,7 +69,7 @@ class UserService(val userRepository: UserRepository, val addressService: Addres
             val updatedEntity = userRepository.save(user)
             return updatedEntity.toUserResponseVO()
         }
-        return null  // TODO throw exception; add controller advice
+        throw UserNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE)
     }
 
     fun updateUserData(userId: UUID, updateUserDataVO: UpdateUserDataVO): UserResponseVO? {
@@ -80,12 +82,12 @@ class UserService(val userRepository: UserRepository, val addressService: Addres
             val updatedEntity = userRepository.save(entity)
             return updatedEntity.toUserResponseVO()
         }
-        return null  // TODO throw exception; add controller advice
+        throw UserNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE)
     }
 
     fun updateUserPassword(updateUserPasswordVO: UpdateUserPasswordVO): UserResponseVO? {
         val spec = UserSpecification()
-        spec.add(SearchCriteria("email", updateUserPasswordVO.email, SearchOperation.EQUAL))
+        spec.add(SearchCriteria(User::email.name, updateUserPasswordVO.email, SearchOperation.EQUAL))
         val optionalUser: Optional<User> = userRepository.findBy(spec) { q -> q.first() }
         if (optionalUser.isPresent) {
             val entity = optionalUser.get()
@@ -94,6 +96,6 @@ class UserService(val userRepository: UserRepository, val addressService: Addres
             val updatedEntity = userRepository.save(entity)
             return updatedEntity.toUserResponseVO()
         }
-        return null // TODO throw exception; add controller advice
+        throw UserNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE)
     }
 }
