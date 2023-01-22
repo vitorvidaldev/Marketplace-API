@@ -1,5 +1,6 @@
 package dev.vitorvidal.marketplace.domain.entity
 
+import dev.vitorvidal.marketplace.domain.vo.UserResponseVO
 import jakarta.persistence.*
 import org.hibernate.Hibernate
 import java.sql.Timestamp
@@ -39,4 +40,13 @@ class User(
     }
 
     override fun hashCode(): Int = id.hashCode()
+
+    fun toUserResponseVO(): UserResponseVO = UserResponseVO(
+        this.id,
+        this.fullName,
+        this.email,
+        this.creationDate,
+        this.lastUpdateDate,
+        this.address
+    )
 }

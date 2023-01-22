@@ -12,7 +12,7 @@ import java.time.Instant
 import java.util.*
 
 @Service
-class UserService(val userRepository: UserRepository) {
+class UserService(val userRepository: UserRepository, val addressService: AddressService) {
     fun getUserById(userId: UUID): UserResponseVO? {
         val optionalUser = userRepository.findById(userId)
         if (optionalUser.isPresent) {
@@ -25,54 +25,60 @@ class UserService(val userRepository: UserRepository) {
     }
 
     fun loginUser(loginVO: LoginVO): UserResponseVO? {
-        TODO("Not yet implemented")
+        val spec = UserSpecification()
+        spec.add(SearchCriteria("email", loginVO.email, SearchOperation.EQUAL))
+        spec.add(SearchCriteria("password", loginVO.password, SearchOperation.EQUAL))
+        val optionalUser: Optional<User> = userRepository.findBy(spec) { q -> q.first() }
+        if (optionalUser.isPresent) {
+            val entity = optionalUser.get()
+            return UserResponseVO(
+                entity.id,
+                entity.fullName,
+                entity.email,
+                entity.creationDate,
+                entity.lastUpdateDate,
+                entity.address
+            )
+        }
+        return null // TODO throw exception; add controller advice
     }
 
-    fun registerUser(registerUserVO: RegisterUserVO): UserResponseVO? {
-        val entity = userRepository.save(
-            User(
-                UUID.randomUUID(),
-                registerUserVO.fullName,
-                registerUserVO.email,
-                registerUserVO.password,
-                registerUserVO.cpf,
-                Timestamp.from(Instant.now()),
-                Timestamp.from(Instant.now())
-            )
+    fun registerUser(registerUserVO: RegisterUserVO): UserResponseVO = userRepository.save(
+        User(
+            UUID.randomUUID(),
+            registerUserVO.fullName,
+            registerUserVO.email,
+            registerUserVO.password,
+            registerUserVO.cpf,
+            Timestamp.from(Instant.now()),
+            Timestamp.from(Instant.now())
         )
-        return UserResponseVO(
-            entity.id,
-            entity.fullName,
-            entity.email,
-            entity.creationDate,
-            entity.lastUpdateDate,
-            entity.address
-        )
-    }
+    ).toUserResponseVO()
 
     fun deleteUser(userId: UUID): Unit = userRepository.deleteById(userId)
 
-    fun registerUserAddress(registerAddressVO: Any): UserResponseVO? {
-        TODO("Not yet implemented")
+    fun registerUserAddress(userId: UUID, registerAddressVO: RegisterAddressVO): UserResponseVO? {
+        val address = addressService.registerUserAddress(registerAddressVO)
+        val optionalUser = userRepository.findById(userId)
+        if (optionalUser.isPresent) {
+            val user = optionalUser.get()
+            user.address = address
+            user.lastUpdateDate = Timestamp.from(Instant.now())
+            val updatedEntity = userRepository.save(user)
+            return updatedEntity.toUserResponseVO()
+        }
+        return null  // TODO throw exception; add controller advice
     }
 
     fun updateUserData(userId: UUID, updateUserDataVO: UpdateUserDataVO): UserResponseVO? {
         val optionalUser = userRepository.findById(userId)
         if (optionalUser.isPresent) {
             val entity = optionalUser.get()
-
             entity.email = updateUserDataVO.email
             entity.fullName = updateUserDataVO.fullName
             entity.lastUpdateDate = Timestamp.from(Instant.now())
             val updatedEntity = userRepository.save(entity)
-            return UserResponseVO(
-                updatedEntity.id,
-                updatedEntity.fullName,
-                updatedEntity.email,
-                updatedEntity.creationDate,
-                updatedEntity.lastUpdateDate,
-                updatedEntity.address
-            )
+            return updatedEntity.toUserResponseVO()
         }
         return null  // TODO throw exception; add controller advice
     }
@@ -86,14 +92,7 @@ class UserService(val userRepository: UserRepository) {
             entity.password = updateUserPasswordVO.password
             entity.lastUpdateDate = Timestamp.from(Instant.now())
             val updatedEntity = userRepository.save(entity)
-            return UserResponseVO(
-                updatedEntity.id,
-                updatedEntity.fullName,
-                updatedEntity.email,
-                updatedEntity.creationDate,
-                updatedEntity.lastUpdateDate,
-                updatedEntity.address
-            )
+            return updatedEntity.toUserResponseVO()
         }
         return null // TODO throw exception; add controller advice
     }

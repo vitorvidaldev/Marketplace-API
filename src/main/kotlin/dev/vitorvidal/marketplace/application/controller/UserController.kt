@@ -25,8 +25,10 @@ class UserController(val userService: UserService) {
 
     @PutMapping("/address") // TODO patch?
     fun registerUserAddress(
+        @RequestHeader(name = "userId") userId: UUID,
         @RequestBody @Valid registerAddressVO: RegisterAddressVO
-    ): ResponseEntity<UserResponseVO> = ResponseEntity.ok().body(userService.registerUserAddress(registerAddressVO))
+    ): ResponseEntity<UserResponseVO> =
+        ResponseEntity.ok().body(userService.registerUserAddress(userId, registerAddressVO))
 
     @PutMapping("/data") // TODO patch?
     fun updateUserData(
