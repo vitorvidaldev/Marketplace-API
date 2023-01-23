@@ -10,3 +10,4 @@ spring:
     hibernate:
       ddl-auto: create-drop
       format_sql: true
+      dialect: org.hibernate.dialect.H2Dialect
