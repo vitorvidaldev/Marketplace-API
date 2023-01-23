@@ -1,5 +1,6 @@
 package dev.vitorvidal.marketplace.domain.entity
 
+import dev.vitorvidal.marketplace.domain.vo.ProductResponseVO
 import jakarta.persistence.*
 import org.hibernate.Hibernate
 import java.sql.Timestamp
@@ -23,7 +24,6 @@ class Product(
     @Temporal(TemporalType.TIMESTAMP)
     val lastUpdatedDate: Timestamp
 ) {
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
@@ -35,4 +35,13 @@ class Product(
     override fun hashCode(): Int = id.hashCode()
     override fun toString(): String =
         "Product(id=$id, productName='$productName', productDescription='$productDescription', creationDate=$creationDate, lastUpdatedDate=$lastUpdatedDate)"
+
+    fun toProductResponseVO(): ProductResponseVO = ProductResponseVO(
+        this.id,
+        this.productName,
+        this.productDescription,
+        this.creator.toUserResponseVO(),
+        this.creationDate,
+        this.lastUpdatedDate
+    )
 }

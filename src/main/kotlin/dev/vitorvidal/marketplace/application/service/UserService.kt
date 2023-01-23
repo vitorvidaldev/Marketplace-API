@@ -1,6 +1,5 @@
 package dev.vitorvidal.marketplace.application.service
 
-import dev.vitorvidal.marketplace.configuration.Constants.Companion.USER_NOT_FOUND_EXCEPTION_MESSAGE
 import dev.vitorvidal.marketplace.configuration.exception.UserNotFoundException
 import dev.vitorvidal.marketplace.domain.entity.User
 import dev.vitorvidal.marketplace.domain.enum.SearchOperation
@@ -8,6 +7,7 @@ import dev.vitorvidal.marketplace.domain.model.SearchCriteria
 import dev.vitorvidal.marketplace.domain.repository.UserRepository
 import dev.vitorvidal.marketplace.domain.repository.specification.UserSpecification
 import dev.vitorvidal.marketplace.domain.vo.*
+import dev.vitorvidal.marketplace.util.Constants.Companion.USER_NOT_FOUND_EXCEPTION_MESSAGE
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
 import java.time.Instant

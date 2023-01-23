@@ -14,12 +14,12 @@ import java.util.*
 @RestController
 @RequestMapping("/rest/v1/product")
 class ProductController(val productService: ProductService) {
-    @GetMapping("/{productId}")
-    fun getProductById(@PathVariable(name = "productId") productId: UUID): ResponseEntity<ProductResponseVO> =
+    @GetMapping("/data")
+    fun getProductById(@RequestHeader(name = "productId") productId: UUID): ResponseEntity<ProductResponseVO> =
         ResponseEntity.ok().body(productService.getProductById(productId))
 
-    @GetMapping("/{creatorId}")
-    fun getProductsByCreatorId(@PathVariable(name = "creatorId") creatorId: UUID): ResponseEntity<Page<ProductResponseVO>> =
+    @GetMapping
+    fun getProductsByCreatorId(@RequestHeader(name = "creatorId") creatorId: UUID): ResponseEntity<Page<ProductResponseVO>> =
         ResponseEntity.ok().body(productService.getProductsByCreatorId(creatorId))
 
     @PostMapping
@@ -28,17 +28,17 @@ class ProductController(val productService: ProductService) {
             HttpStatus.CREATED
         ).body(productService.registerNewProduct(registerProductVO))
 
-    @PutMapping("/data/{productId}/user/{creatorId}")
+    @PutMapping("/data")
     fun updateProductData(
-        @PathVariable(name = "productId") productId: UUID,
-        @PathVariable(name = "creatorId") creatorId: UUID,
+        @RequestHeader(name = "productId") productId: UUID,
+        @RequestHeader(name = "creatorId") creatorId: UUID,
         @RequestBody @Valid updateProductDataVO: UpdateProductVO
     ): ResponseEntity<ProductResponseVO> =
         ResponseEntity.ok().body(productService.updateProductData(productId, creatorId, updateProductDataVO))
 
-    @DeleteMapping("/{productId}/user/{creatorId}")
+    @DeleteMapping
     fun deleteProduct(
-        @PathVariable(name = "productId") productId: UUID,
-        @PathVariable(name = "creatorId") creatorId: UUID
+        @RequestHeader(name = "productId") productId: UUID,
+        @RequestHeader(name = "creatorId") creatorId: UUID
     ): ResponseEntity<Void> = productService.deleteProduct(productId, creatorId)
 }

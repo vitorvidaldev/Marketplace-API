@@ -23,21 +23,21 @@ class UserController(val userService: UserService) {
     fun registerUser(@RequestBody @Valid registerUserVO: RegisterUserVO): ResponseEntity<UserResponseVO> =
         ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUser(registerUserVO))
 
-    @PutMapping("/address") // TODO patch?
+    @PutMapping("/address")
     fun registerUserAddress(
         @RequestHeader(name = "userId") userId: UUID,
         @RequestBody @Valid registerAddressVO: RegisterAddressVO
     ): ResponseEntity<UserResponseVO> =
         ResponseEntity.ok().body(userService.registerUserAddress(userId, registerAddressVO))
 
-    @PutMapping("/data") // TODO patch?
+    @PutMapping("/data")
     fun updateUserData(
         @RequestHeader(name = "userId") userId: UUID,
         @RequestBody @Valid updateUserDataVO: UpdateUserDataVO
     ): ResponseEntity<UserResponseVO> =
         ResponseEntity.ok().body(userService.updateUserData(userId, updateUserDataVO))
 
-    @PutMapping("/password") // TODO patch?
+    @PutMapping("/password")
     fun updateUserPassword(@RequestBody @Valid updateUserPasswordVO: UpdateUserPasswordVO): ResponseEntity<UserResponseVO> =
         ResponseEntity.ok().body(userService.updateUserPassword(updateUserPasswordVO))
 
