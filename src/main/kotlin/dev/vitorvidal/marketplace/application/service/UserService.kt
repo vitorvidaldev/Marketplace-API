@@ -20,7 +20,12 @@ class UserService(val userRepository: UserRepository, val addressService: Addres
         if (optionalUser.isPresent) {
             val entity = optionalUser.get()
             return UserResponseVO(
-                entity.id, entity.fullName, entity.email, entity.creationDate, entity.lastUpdateDate, entity.address
+                entity.id,
+                entity.fullName,
+                entity.email,
+                entity.creationDate,
+                entity.lastUpdateDate,
+                entity.address?.toAddressVO()
             )
         }
         throw UserNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE)
@@ -39,7 +44,7 @@ class UserService(val userRepository: UserRepository, val addressService: Addres
                 entity.email,
                 entity.creationDate,
                 entity.lastUpdateDate,
-                entity.address
+                entity.address?.toAddressVO()
             )
         }
         throw UserNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE)
@@ -66,8 +71,8 @@ class UserService(val userRepository: UserRepository, val addressService: Addres
             val user = optionalUser.get()
             user.address = address
             user.lastUpdateDate = Timestamp.from(Instant.now())
-            val updatedEntity = userRepository.save(user)
-            return updatedEntity.toUserResponseVO()
+            userRepository.save(user)
+            return user.toUserResponseVO()
         }
         throw UserNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE)
     }

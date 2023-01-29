@@ -1,5 +1,6 @@
 package dev.vitorvidal.marketplace.domain.entity
 
+import dev.vitorvidal.marketplace.domain.vo.AddressVO
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
@@ -41,4 +42,14 @@ class Address(
     override fun toString(): String {
         return "Address(id=$id, country='$country', state='$state', city='$city', streetName='$streetName', streetNumber=$streetNumber, postCode='$postCode', complement=$complement)"
     }
+
+    fun toAddressVO(): AddressVO = AddressVO(
+        this.id,
+        this.country,
+        this.state,
+        this.city,
+        this.streetName,
+        this.streetNumber,
+        this.postCode
+    )
 }

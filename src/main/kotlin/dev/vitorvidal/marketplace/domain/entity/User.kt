@@ -47,6 +47,6 @@ class User(
         this.email,
         this.creationDate,
         this.lastUpdateDate,
-        this.address
+        this.address?.toAddressVO()
     )
 }
