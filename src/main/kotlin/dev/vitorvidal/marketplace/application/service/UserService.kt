@@ -44,7 +44,7 @@ class UserService(val userRepository: UserRepository, val addressService: Addres
                 entity.email,
                 entity.creationDate,
                 entity.lastUpdateDate,
-                entity.address?.toAddressVO()
+                entity.address?.toAddressVO() // TODO fix load bug
             )
         }
         throw UserNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE)

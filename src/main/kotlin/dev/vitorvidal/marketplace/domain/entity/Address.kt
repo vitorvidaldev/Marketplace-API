@@ -25,9 +25,9 @@ class Address(
     val streetNumber: Int,
     @Column(name = "post_code", columnDefinition = "VARCHAR(20)", nullable = false)
     val postCode: String,
-) {
     @Column(name = "complement", columnDefinition = "INT", nullable = true) // TODO verify column definition
     var complement: Int? = null
+) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
