@@ -1,12 +1,31 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/marketplace
+    url: jdbc:h2:mem:marketplace;NON_KEYWORDS=USER
     username: admin
     password: admin!123
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.h2.Driver
   jpa:
     open-in-view: false
     show-sql: true
     hibernate:
-      ddl-auto: create-drop # TODO configure database creation script and change this to validate(?)
+      ddl-auto: create-drop
       format_sql: true
+      generate_statistics: true
+      dialect: org.hibernate.dialect.H2Dialect
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
+        sql: debug
+        orm:
+          jdbc:
+            bind: trace
+        stat: debug
+        SQL_SLOW: info
+        cache: debug

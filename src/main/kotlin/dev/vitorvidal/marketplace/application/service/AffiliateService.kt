@@ -1,3 +1,8 @@
 package dev.vitorvidal.marketplace.application.service
 
-class AffiliateService
+import org.springframework.stereotype.Service
+
+@Service
+class AffiliateService {
+
+}
